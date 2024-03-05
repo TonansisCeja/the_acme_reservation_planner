@@ -81,22 +81,26 @@ const init = async () => {
   await Promise.all([
     createReservation({
       customer_id: Mike.id,
-      place_id: OutBack.id,
+      restaurant_id: OutBack.id,
+      party_count:"2", 
       date: "04/01/2024"
     }),
     createReservation({
       customer_id: Joe.id,
-      place_id: Panera.id,
+      restaurant_id: Panera.id,
+      party_count:"3",
       date: "04/15/2024"
     }),
     createReservation({
       customer_id: Jesse.id,
-      place_id: Chipotle.id,
+      restaurant_id: Chipotle.id,
+      party_count: "4",
       date: "07/04/2024"
     }),
     createReservation({
       customer_id: Jesse.id,
-      place_id: OutBack.id,
+      restaurant_id: OutBack.id,
+      party_count:"3",
       date: "10/31/2024"
     }),
   ]);
