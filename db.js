@@ -21,8 +21,8 @@ const createTables = async () => {
   CREATE TABLE reservation(
     id UUID PRIMARY KEY,
     party_count INTEGER NOT NULL,
-    restaurant_id UUID REFERENCES restaurant(id) NOT NULL,
     customer_id UUID REFERENCES customer(id) NOT NULL,
+    restaurant_id UUID REFERENCES restaurant(id) NOT NULL,
     date DATE NOT NULL
   
   );
@@ -46,15 +46,15 @@ const createRestaurant = async (name) => {
   return response.rows[0];
 };
 
-const createReservation = async ({ customer_id, party_count, restaurant_id, date }) => {
+const createReservation = async ({ customer_id, restaurant_id, party_count, date }) => {
   const SQL = `
-        INSERT INTO reservation(id, customer_id, party_count, restaurant_id, date) VALUES($1, $2, $3, $4, $5) RETURNING *
+        INSERT INTO reservation(id, customer_id, restaurant_id, party_count, date) VALUES($1, $2, $3, $4, $5) RETURNING *
       `;
   const response = await client.query(SQL, [
     uuid.v4(),
-    party_count,
     customer_id,
     restaurant_id,
+    party_count,
     date
   ]);
   return response.rows[0];
@@ -92,7 +92,8 @@ const destroyReservation = async (id) => {
     DELETE FROM reservation
     where id = $1
       `;
-  await client.query(SQL, [id]);
+  const response = await client.query(SQL,[id]);
+  return response.rows;
 };
 
 

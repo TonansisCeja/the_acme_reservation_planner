@@ -31,7 +31,7 @@ app.get("/api/restaurant", async (req, res, next) => {
   }
 });
 
-app.get("/api/Reservation", async (req, res, next) => {
+app.get("/api/reservation", async (req, res, next) => {
   try {
     res.send(await fetchReservation());
   } catch (ex) {
@@ -39,7 +39,7 @@ app.get("/api/Reservation", async (req, res, next) => {
   }
 });
 
-app.delete("/api/vacations/:id", async (req, res, next) => {
+app.delete("/api/reservation/:id", async (req, res, next) => {
   try {
     await destroyReservation(req.params.id);
     res.sendStatus(204);
@@ -48,9 +48,17 @@ app.delete("/api/vacations/:id", async (req, res, next) => {
   }
 });
 
-app.post("/api/vacation", async (req, res, next) => {
+app.post("/api/reservation", async (req, res, next) => {
   try {
     res.sendStatus(201).send(await createReservation(req.param.id));
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+app.delete("/api/destroyReservation", async (req, res, next) => {
+  try {
+    res.sendStatus(201).send(await destroyReservation(res.param.id));
   } catch (ex) {
     next(ex);
   }
@@ -94,7 +102,7 @@ const init = async () => {
     createReservation({
       customer_id: Jesse.id,
       restaurant_id: Chipotle.id,
-      party_count: "4",
+      party_count:"4",
       date: "07/04/2024"
     }),
     createReservation({
@@ -105,10 +113,7 @@ const init = async () => {
     }),
   ]);
 
-  const reservation = await fetchReservation();
-  console.log(reservation);
-  await destroyReservation(reservation[0], id);
-  console.log(await fetchReservation());
+
 
   const port = process.env.PORT || 3000;
   app.listen(port, () => console.log(`listening on port ${port}`));
